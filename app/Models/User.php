@@ -10,6 +10,7 @@ class User extends Model
     use HasFactory;
    // public $table="hindis"; //you put this when you r not naming the model as the table in db (users->user)
     public $timestamps=false;
+    
 
     public function getusernameAttribute($value){
             return ucFirst($value);

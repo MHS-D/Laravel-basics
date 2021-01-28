@@ -2,13 +2,17 @@
 
 use App\Http\Controllers\about;
 use App\Http\Controllers\api;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\database;
+use App\Http\Controllers\forgotpassword;
 use App\Http\Controllers\uploadfile;
 use App\Http\Controllers\userAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\users;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 use function GuzzleHttp\Promise\coroutine;
@@ -156,6 +160,39 @@ Route::get('relation2',[database::class,'onetomany']);
 Route::get('bind/{key:username}',[database::class,'binding']);
 
 
+                // HITOS PROJECT//-------NOT USED----------
+Route::get('/forgot_password',[forgotpassword::class,'forgot']);
+Route::view('resset', 'password');
+Route::post('reset',[forgotpassword::class,'resset']);
+//-----------------------------------------------------------------------
+
+
+//------------------add image-----------
+Route::view('add-student', 'add-student');
+Route::post('add-image',[uploadfile::class,'addimage']);
+
+Route::get('students',[uploadfile::class,'viewImage']);
+
+Route::get('edit-student/{id}',[uploadfile::class,'beforUpdate']);
+Route::post('update-student',[uploadfile::class,'editImage'])->name('student.update');
+
+Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
+//---------------------------------------------------------------
+
+
+//---------------------------------hitos------------------
+
+Route::view('loginP', 'hitosLogin');
+Route::post('hitos',[users::class,'hitos']);
+Route::view('index', 'hitosHome');
+
+// -----------------------------forget password ------------------------------
+Route::get('forget-password',[ForgotPasswordController::class, 'getEmail'] )->name('forget-password');
+Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->name('forget-password');
+
+// -----------------------------resset password ------------------------------
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword']);
+Route::post('reset-password',  [ResetPasswordController::class, 'updatePassword']);
 
 
 

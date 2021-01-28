@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class users extends Controller
@@ -59,5 +61,30 @@ class users extends Controller
         return redirect('add');
         }
 
+        
+        public function hitos(Request $req){
+
+          $req->validate([
+              'username'=>'required  ',
+              'password'=>'required '
+          ]); 
+          $user = DB::table('users')->where('username', $req->username)->value('username');
+          $pass = DB::table('users')->where('username', $req->username)->value('password');
+          $password=  Hash::check($req->password, $pass);
+         
+
+            if($user== $req->username and $password == true ){
+
+              $req->session()->put('client', $user);
+              return redirect('index');
+           }
+           else {
+
+            return redirect('loginP')->with('error', 'Oppes! You have entered invalid username or password');
+           } 
+          
+        } 
+
+        
       
     }

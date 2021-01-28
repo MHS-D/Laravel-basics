@@ -126,7 +126,7 @@ class database extends Controller
               $user ->username='hamody';
               $user ->password='anawadkazanova';
               $user ->number='71187805';
-              $user->save();
+              $user->save(); 
           }
 
           function onetoOne()

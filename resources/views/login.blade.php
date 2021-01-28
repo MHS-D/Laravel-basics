@@ -1,6 +1,6 @@
 <h1>User login</h1>
 
-<form action="in" method="POST"> 
+<form action="login" method="POST"> 
     {{method_field('POST')}} {{-- u can use 'delete' or 'put' method here (change also from routes) --}}
     @csrf
     <input type="text" name="username" placeholder="enter user id"> <br> 
