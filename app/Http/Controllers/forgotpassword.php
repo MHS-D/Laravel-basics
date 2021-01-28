@@ -18,14 +18,11 @@ use function GuzzleHttp\Promise\all;
 
 class forgotpassword extends Controller
 {
-    public function forgot(){
+    public function forgot()
+    {
         return view('forgot');
     }
 
-
-    
-    
-    
     public function resset(Request $req){
 
         if( $req->password == $req->pass ){
