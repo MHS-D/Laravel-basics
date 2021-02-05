@@ -20,7 +20,7 @@ class forgotpassword extends Controller
 {
     public function forgot()
     {
-        return view('forgot');
+        return view('passwords.forgot');
     }
 
     public function resset(Request $req){

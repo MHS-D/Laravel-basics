@@ -38,4 +38,22 @@ class ResetPasswordController extends Controller
 
           return redirect('/loginP')->with('message', 'Your password has been changed!');
     }
+
+    public function ressetpass2(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required',
+
+        ]);
+
+       
+
+           User::where('email', $request->email)
+                      ->update(['password' => Hash::make($request->password)]);
+
+
+          return redirect('/loginP')->with('message', 'Your password has been changed!');
+    }
 }

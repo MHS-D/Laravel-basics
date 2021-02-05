@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <form action="hitos" method="POST">
                         @csrf
-                       
+
                         <div class="img">
                             <img class="img-avatar" src="assets/img/avatar.svg">
                         </div>

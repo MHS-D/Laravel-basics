@@ -160,11 +160,7 @@ Route::get('relation2',[database::class,'onetomany']);
 Route::get('bind/{key:username}',[database::class,'binding']);
 
 
-                // HITOS PROJECT//-------NOT USED----------
-Route::get('/forgot_password',[forgotpassword::class,'forgot']);
-Route::view('resset', 'password');
-Route::post('reset',[forgotpassword::class,'resset']);
-//-----------------------------------------------------------------------
+               
 
 
 //------------------add image-----------
@@ -193,6 +189,11 @@ Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->
 // -----------------------------resset password ------------------------------
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword']);
 Route::post('reset-password',  [ResetPasswordController::class, 'updatePassword']);
+
+ // HITOS PROJECT//-------RESSET FOR SCHEDULER----------
+ Route::view('pass', 'passwords.pass2');
+ Route::post('/reset',[ResetPasswordController::class,'ressetpass2']);
+ //-----------------------------------------------------------------------
 
 
 

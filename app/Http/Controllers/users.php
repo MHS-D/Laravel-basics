@@ -71,11 +71,20 @@ class users extends Controller
           $user = DB::table('users')->where('username', $req->username)->value('username');
           $pass = DB::table('users')->where('username', $req->username)->value('password');
           $password=  Hash::check($req->password, $pass);
-         
+
 
             if($user== $req->username and $password == true ){
 
               $req->session()->put('client', $user);
+              $reset = DB::table('users')->where('username', $req->username)->value('resset');
+
+                if($reset==1){
+                  User::where('username', $user)
+                  ->update(['resset' => '0']);
+                  $email = DB::table('users')->where('username', $req->username)->value('email');
+
+                  return view('passwords.pass2',['email'=>$email]);
+                }
               return redirect('index');
            }
            else {

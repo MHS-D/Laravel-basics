@@ -18,7 +18,6 @@
         <header>
             <div class="container">
                 <nav>
-                    {{-- {{$value=session('client')}} --}} 
                     <div class="nav-brand">
                         <a href="index.html">
                             <img src="assets/img/logo.png" alt="">

@@ -2,8 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\users;
+use App\Models\reset;
+use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class pass14 extends Command
 {
@@ -37,9 +42,12 @@ class pass14 extends Command
      * @return int
      */
     public function handle()
-    {
-         
-        echo 'operation done';
+    {  
+        User::where('resset', '=', 0)->update(['resset' => 1]);
+
+
+
+            echo 'operation done';
         
        }
 }
