@@ -1,0 +1,309 @@
+<!-- START: Create/Update Anamnese Form Modal -->
+<div id="create-update-anamnese-form-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Anamnese Form</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-anamnese-form-form" class="ajax-form form-horizontal">
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Name</label>
+                        <div class="col-md-6">
+                            <input id="group-name" type="text" class="form-control form-input" name="name" value="" required autocomplete="name" autofocus>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="anamnese-form-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="anamnese-form-hidden-id" />
+                        <button type="submit" name="create_update_anamnese_form" id="anamnese-form-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update Anamnese Form Modal -->
+
+<!-- START: Create/Update Custom Fields Group Modal -->
+<div id="create-update-custom-fields-group-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Section</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-custom-fields-group-form" class="ajax-form form-horizontal">
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Name</label>
+                        <div class="col-md-6">
+                            <input id="group-name" type="text" class="form-control form-input" name="name" value="" required autocomplete="name" autofocus>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="custom-fields-group-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="custom-fields-group-hidden-id" />
+                        <button type="submit" name="create_update_custom_fields_group" id="custom-fields-group-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update Custom Fields Group Modal -->
+
+<!-- START: Create/Update Custom Fields Modal -->
+<div id="create-update-custom-field-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Custome Field</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-custom-fields-form" class="ajax-form form-horizontal">
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control form-input" name="name" value="" required autocomplete="name" autofocus>
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div class="form-group row">
+                        <!-- Label -->
+                        <label class="col-md-4 col-form-label text-md-right" for="<?= $key; ?>">
+                            Type
+                        </label>
+                        <!-- Checkbox -->
+                        <div class="col-md-6">
+                            <select class="form-control">
+                                <option>Text</option>
+                                <option>Dropdown List</option>
+                                <option>Email</option>
+                                <option>Number</option>
+                                <option>Range</option>
+                                <option>Checkbox</option>
+                                <option>True/False</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="custom-fields-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="custom-fields-hidden-id" />
+                        <button type="submit" name="create_update_custom_fields" id="custom-fields-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update Custom Fields Modal -->
+
+<!-- START: Create/Update xRay Modal -->
+<div id="create-update-xRay-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">xRay</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-xRay-form" class="ajax-form form-horizontal">
+                    <!-- Organ -->
+                    <div class="form-group row">
+                        <!-- Label -->
+                        <label class="col-md-4 col-form-label text-md-right" for="">
+                            Organ
+                        </label>
+                        <!-- Checkbox -->
+                        <div class="col-md-6">
+                            <select class="form-control">
+                                <option>Arm</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div class="form-group row">
+                        <!-- Label -->
+                        <label class="col-md-4 col-form-label text-md-right" for="">
+                            Type
+                        </label>
+                        <!-- Checkbox -->
+                        <div class="col-md-6">
+                            <select class="form-control">
+                                <option>xRay</option>
+                                <option>CT Scan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Date</label>
+                        <div class="col-md-6">
+                            <input id="" type="date" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Time</label>
+                        <div class="col-md-6">
+                            <input id="" type="time" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="xRay-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="xRay-hidden-id" />
+                        <button type="submit" name="create_update_custom_fields_group" id="xRay-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update xRay Modal -->
+
+<!-- START: Create/Update Medication Modal -->
+<div id="create-update-medication-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Medication</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-medication-form" class="ajax-form form-horizontal">
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <!-- Label -->
+                        <label class="col-md-4 col-form-label text-md-right" for="">
+                            Name
+                        </label>
+                        <!-- Input -->
+                        <div class="col-md-6">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Date</label>
+                        <div class="col-md-6">
+                            <input id="" type="date" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Time</label>
+                        <div class="col-md-6">
+                            <input id="" type="time" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="xRay-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="xRay-hidden-id" />
+                        <button type="submit" name="create_update_custom_fields_group" id="xRay-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update Medication Modal -->
+
+<!-- START: Create/Update Complaint Modal -->
+<div id="create-update-complaints-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Complaint</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-update-complaint-form" class="ajax-form form-horizontal">
+                    <!-- Complaint -->
+                    <div class="form-group row">
+                        <!-- Label -->
+                        <label class="col-md-4 col-form-label text-md-right" for="">
+                            Complaint
+                        </label>
+                        <!-- Input -->
+                        <div class="col-md-6">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Date</label>
+                        <div class="col-md-6">
+                            <input id="" type="date" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group row">
+                        <label for="group-name" class="col-md-4 col-form-label text-md-right">Time</label>
+                        <div class="col-md-6">
+                            <input id="" type="time" class="form-control form-input" name="" value="" required>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="form-group text-center">
+                        <input type="hidden" name="action" id="xRay-form-action" value="create" />
+                        <input type="hidden" name="hidden_id" id="xRay-hidden-id" />
+                        <button type="submit" name="create_update_custom_fields_group" id="xRay-form-action-button" value="create" class="btn btn-warning">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Create/Update Complaint Modal -->
+
+<!-- START: Delete Confirm Modal -->
+<div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="right modal-title">Confirm</h2>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" style="margin:0;">Are you sure you want to complete this process?</h4>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" id="confirm-form" class="form-horizontal m-0" action="url">
+                    <div class="form-group text-center">
+                        <input type="submit" name="confirm_form" id="confirm_form" class="btn btn-danger" value="Confirm" />
+                    </div>
+                </form>
+
+                <div class="form-group text-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Delete Confirm Modal -->

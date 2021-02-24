@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 
 class check
 {
@@ -21,6 +23,16 @@ class check
        if($request->id && $request->id>100){
             return redirect('noaccess');
        }
-        return $next($request);
+        return $next($request); 
     }
+ /*    public function handle($request, Closure $next)
+    {
+        
+        if ($request->session()->exists('client')) {
+            // user value cannot be found in session
+            return redirect('loginP');
+        }
+
+        return $next($request);
+    } */
 }

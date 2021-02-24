@@ -176,11 +176,13 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
 //---------------------------------------------------------------
 
 
-//---------------------------------hitos------------------
+//---------------------------------hitos login------------------
 
-Route::view('loginP', 'hitosLogin');
-Route::post('hitos',[users::class,'hitos']);
-Route::view('index', 'hitosHome');
+Route::group(['middleware' => 'userIn'], function () {
+    Route::view('loginP', 'hitos.hitosLogin');
+
+Route::post('hitos',[users::class,'hitosLog']);
+Route::view('index', 'hitos.hitosHome');
 
 // -----------------------------forget password ------------------------------
 Route::get('forget-password',[ForgotPasswordController::class, 'getEmail'] )->name('forget-password');
@@ -194,6 +196,22 @@ Route::post('reset-password',  [ResetPasswordController::class, 'updatePassword'
  Route::view('pass', 'passwords.pass2');
  Route::post('/reset',[ResetPasswordController::class,'ressetpass2']);
  //-----------------------------------------------------------------------
+ 
+ //---------------------------------hitos register------------------
+ Route::view('Preg', 'hitos.patient-reg');  
+ Route::post('patient-reg',[users::class,'Preg'] );
+
+ Route::view('Dreg', 'hitos.doctor-reg');  
+ Route::post('doctor-reg',[users::class,'Dreg'] );
+});
+ //---------------------------------hitos tasks------------------
+
+Route::get('doctor', [users::class,'doctor']);  
+Route::get('tasks/{id}', [users::class,'tasks']);
+
+
+
+
 
 
 

@@ -1,0 +1,47 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 16, 2018, 9:18:54 PM
+    Author     : Araksoft
+*/
+h2 {
+    font: 700 24px 'Cairo';
+}
+h3 {
+    font: 600 20px 'Cairo';
+}
+h4 {
+    font: 300 18px 'Cairo';
+}
+small {
+    font: 600 16px 'Cairo';
+}
+li {
+    font: 400 15px 'Cairo';
+}
+button {
+    font: 400 17px 'Cairo';
+}
+th  {
+    font: 400 17px 'Cairo';
+}
+td {
+    font: 300 13px 'Cairo';
+}
+a {
+    font: 300 13px 'Cairo';
+}
+span {
+    font: 300 14px 'Cairo';
+}
+
+div {
+    font: 300 14px 'Cairo';
+}
+
+label {
+    font: 300 14px 'Cairo';
+}
