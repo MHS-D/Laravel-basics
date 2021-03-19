@@ -1,38 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
     <!-- START: Header -->
-        <div include-html="inc/header.html"></div> 
+
     <!-- END: Header -->
     
 
     <body class="page-header-fixed page-quick-sidebar-over-content page-style-square">
         <!-- START: Pre-Loader -->
-     <div class="page-loader-wrapper" id="pageloader">
-            <div class="loader">
-                <div class="preloader">
-                    <div class="spinner-layer pl-red">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-                <p>Please wait...</p>
-            </div>
-        </div>
-        <!-- END: Pre-Loader -->
 
-        <!-- START: NavBar -->
-            <div include-html="inc/navbar.html"></div>  
-        <!-- END: NavBar -->
+     
+
+       
 
         <div class="clearfix"></div>
         <div class="page-container">
             
             <!-- START: Sidebar -->
-                <div include-html="inc/sidebar.html"></div> 
+            @include('components.sidebar')
             <!-- END: Sidebar -->
 
             <div class="page-content-wrapper">
@@ -162,11 +146,10 @@
                                         <!-- Tasks Author -->
                                         <div class="task-author">
                                            
-                                            <u>From</u>: Dr.  {{$name = DB::table('users')->where('id', $task->sender_id)->value('Fname')}}
-                                            {{$lname = DB::table('users')->where('id', $task->sender_id)->value('Lname') }}
+                                            <u>From</u>: Dr.  {{$name = DB::table('users')->where('id', $task->sender_id)->value('name')}}
+                                           
                                             <br>
-                                            <u>To</u>:  {{$name = DB::table('users')->where('id', $task->reciever_id)->value('Fname')}}
-                                            {{$lname = DB::table('users')->where('id', $task->reciever_id)->value('Lname') }}
+                                            <u>To</u>:  {{$name = DB::table('users')->where('id', $task->reciever_id)->value('name')}}
                                         </div>
                                     </div>
                                     @endif
@@ -196,11 +179,9 @@
                                  <!-- Tasks Author -->
                                  <div class="task-author">
                                     
-                                     <u>From</u>: Dr.  {{$name = DB::table('users')->where('id', $task->sender_id)->value('Fname')}}
-                                     {{$lname = DB::table('users')->where('id', $task->sender_id)->value('Lname') }}
+                                     <u>From</u>: Dr.  {{$name = DB::table('users')->where('id', $task->sender_id)->value('name')}}
                                      <br>
-                                     <u>To</u>:  {{$name = DB::table('users')->where('id', $task->reciever_id)->value('Fname')}}
-                                     {{$lname = DB::table('users')->where('id', $task->reciever_id)->value('Lname') }}
+                                     <u>To</u>:  {{$name = DB::table('users')->where('id', $task->reciever_id)->value('name')}}
                                         </div>
                                     </div>
                                     @endif

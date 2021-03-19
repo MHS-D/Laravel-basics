@@ -16,9 +16,13 @@ class checkgroup
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->age && $request->age<18){
-            return redirect('noaccess');
-       }
-        return $next($request);
+            if (!$request->session()->exists('client_id')) 
+                return redirect('loginP');
+            
+            else
+            return $next($request);
+
+
+
     }
 }

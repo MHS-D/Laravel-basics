@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\database;
 use App\Http\Controllers\forgotpassword;
+use App\Http\Controllers\hitos_payment;
 use App\Http\Controllers\uploadfile;
 use App\Http\Controllers\userAuth;
 use Illuminate\Support\Facades\Route;
@@ -177,12 +178,15 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
 
 
 //---------------------------------hitos login------------------
-
-Route::group(['middleware' => 'userIn'], function () {
-    Route::view('loginP', 'hitos.hitosLogin');
-
+Route::view('loginP', 'hitos.hitosLogin');
 Route::post('hitos',[users::class,'hitosLog']);
+
+
+Route::group(['middleware' => 'protectedPages'], function () {
+
 Route::view('index', 'hitos.hitosHome');
+//---------------------------------hitos logout------------------
+Route::get('logout',[users::class,'logout']);
 
 // -----------------------------forget password ------------------------------
 Route::get('forget-password',[ForgotPasswordController::class, 'getEmail'] )->name('forget-password');
@@ -203,11 +207,34 @@ Route::post('reset-password',  [ResetPasswordController::class, 'updatePassword'
 
  Route::view('Dreg', 'hitos.doctor-reg');  
  Route::post('doctor-reg',[users::class,'Dreg'] );
-});
- //---------------------------------hitos tasks------------------
 
+ //---------------------------------hitos tasks (tasks and notifications)------------------
 Route::get('doctor', [users::class,'doctor']);  
 Route::get('tasks/{id}', [users::class,'tasks']);
+Route::get('task_complete/{id}', [users::class,'task_complete']);
+Route::post('is_complete', [users::class,'task_is_complete']);
+
+ 
+ //---------------------------------Hitos website settings (name and logo)------------------
+ Route::view('settings', 'hitos.site');  
+ Route::post('name_logo', [users::class,'settings']);  
+ 
+ //---------------------------------Hitos Meetings ------------------
+ Route::get('meetings', [users::class,'meeting']);  
+    Route::get('decline/{id}',[users::class,'meetDecline']);
+    Route::post('meetAccept',[users::class,'meetAccept']);
+
+    Route::get('patient', [users::class,'Patient_meet']);  
+    Route::get('meetdelete/{id}',[users::class,'meetDelete']);
+
+  //---------------------------------Hitos payment (stripe)------------------
+  Route::get('checkout/{id}',[hitos_payment::class,'checkout']);
+  Route::post('checkout',[hitos_payment::class,'afterpayment'])->name('checkout.credit-card');
+
+});
+
+
+
 
 
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordController extends Controller
 {
+     //------------------------------------HITOS PROJECT--------------------------------------------------------
     public function getPassword($token) {
 
        return view('passwords.password', ['token' => $token]);

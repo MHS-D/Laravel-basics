@@ -45,7 +45,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-bell"></i>
                     <span class="badge badge-default">
-                    7 </span>
+                        {{count($dtasks)}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-list" aria-labelledby="navbarDropdown">
                     <ul>
@@ -56,10 +56,8 @@
                         <li>
                             <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                                @foreach ($dtasks as $task)
-                                   
-                               
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href="task_complete/{{$task->id}}">
                                     <span class="time">due {{$task->due_date}}</span>
                                     <span class="details">
                                     <span class="label label-sm label-icon label-success">
@@ -68,6 +66,7 @@
                                     {{$task->title}} </span>
                                     </a>
                                 </li>
+                                
                                 @endforeach
                              
                             
@@ -172,93 +171,35 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-calendar"></i>
                     <span class="badge badge-default">
-                    5 </span>
-                </a>
+                        {{count($parent)}} </span>
+                </a> 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <ul class="extended tasks">
                         <li class="external">
-                            <h3>You have <span class="bold">12 pending</span> tasks</h3>
+                            <h3>You have <span class="bold">{{count($parent)}} pending</span> tasks</h3>
                             <a href="page_todo.html">view all</a>
                         </li>
                         <li>
                             <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                @foreach ($parent as $p)
+
+                                @if ($p->is_complete == 'no')
+                               
                                 <li>
                                     <a href="javascript:;">
                                         <span class="task">
-                                            <span class="desc">New release v1.2 </span>
-                                            <span class="percent">30%</span>
+                                            <span class="desc">{{$p->title}}</span>
+                                            <span class="percent">(Done {{$done=count(DB::table('tasks')->where('parent_id',$p->id)->where('is_complete','yes')
+                                            ->get())}} From {{$all=count(DB::table('tasks')->where('parent_id',$p->id)->get())}})</span>
                                         </span>
                                         <span class="progress">
-                                            <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">40% Complete</span></span>
+                                            <span style="width:{{($done*100)/$all}}%;" class="progress-bar progress-bar-success"</span>
                                         </span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">Application deployment</span>
-                                            <span class="percent">65%</span>
-                                        </span>
-                                        <span class="progress">
-                                            <span style="width: 65%;" class="progress-bar progress-bar-danger" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">65% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">Mobile app release</span>
-                                            <span class="percent">98%</span>
-                                        </span>
-                                        <span class="progress">
-                                            <span style="width: 98%;" class="progress-bar progress-bar-success" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">98% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">Database migration</span>
-                                            <span class="percent">10%</span>
-                                        </span>
-                                        <span class="progress">
-                                            <span style="width: 10%;" class="progress-bar progress-bar-warning" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">10% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">Web server upgrade</span>
-                                            <span class="percent">58%</span>
-                                        </span>
-                                        <span class="progress">
-                                            <span style="width: 58%;" class="progress-bar progress-bar-info" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">58% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">Mobile development</span>
-                                            <span class="percent">85%</span>
-                                        </span>
-                                        <span class="progress">
-                                            <span style="width: 85%;" class="progress-bar progress-bar-success" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">85% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="task">
-                                            <span class="desc">New UI release</span>
-                                            <span class="percent">38%</span>
-                                        </span>
-                                        <span class="progress progress-striped">
-                                            <span style="width: 38%;" class="progress-bar progress-bar-important" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"><span class="sr-only">38% Complete</span></span>
-                                        </span>
-                                    </a>
-                                </li>
+
+                                @endif
+                                @endforeach
                             </ul>
                         </li>
                     </ul>
@@ -329,9 +270,7 @@
         <div class="page-container">
             
             <!-- START: Sidebar -->
-                <div include-html="inc/sidebar.html"></div> 
-            <!-- END: Sidebar -->
-
+            @include('components.sidebar')
             <div class="page-content-wrapper">
                 <div class="page-content">
                     <h3 class="page-title">
@@ -340,6 +279,11 @@
 
                     <!-- START: Page Here -->
                     <div class="row">
+                        @if (session()->has('task_completed'))
+                        <div class="" style="color: green">
+                            {{ session()->get('task_completed') }}
+                        </div>
+                        @endif
                         <!-- START: Body Model -->
                             <div include-html="inc/human_body.html" class="col-3"></div>
  <!-- END: Body Mode
@@ -348,7 +292,7 @@
  <!-- START: Case Content -->
  <div class="col-6">
      <!-- START: Tabs -->
-         <span include-html="inc/tabs.html"></span>
+         <span include-html="inc/tabs.html"></span> 
      <!-- START: Tab
      <div class="tab-content" id="myTabContent">
          <!-- START: Anamnese Tab -->
@@ -356,26 +300,17 @@
      <!-- Create Anamnese Form -->
      <h3>Create Anamnese Form</h3>
      <button type="button" parm_id="$group['id']" class="create btn btn-info" item_name="users-custom-field" onClick="get_parameters(this)" data-toggle="modal" data-target="#create-update-custom-fields-group-modal"><i class="material-icons">add</i> Create Form Section</button>
-     <div class="row">
+     <div class="row"> 
          <div class="col-md-12">
              <div class="card">
                  <!-- Card Header -->
                  <div class="card-header card-header-success">
                      <div class="row">
                          <div class="col">
-                             <h4 class="card-title ">General Information</h4>
+                             <h4 class="card-title ">patient Information</h4>
                              <p class="card-category"> Here is a subtitle for this table</p>
                          </div>
-                         <div class="col">
-                             <!-- Add Field Button -->
-                             <button type="button" parm_id="$group['id']" class="create btn btn-white btn-sm btn-circle btn-just-icon float-right" item_name="users-custom-field" onClick="get_parameters(this)" data-toggle="modal" data-target="#create-update-custom-field-modal"><i class="material-icons">add</i></button>
-                             <!-- Order Fields Button -->
-                             <button type="button" group_id="$group['id']" class="order-fields btn btn-white btn-sm btn-circle btn-just-icon float-right" data-toggle="modal" data-target="#order-fields-modal"><i class="material-icons">sort</i></button>
-                             <!-- Edit Button -->
-                             <button type="button" id="$group['id']" class="update btn btn-white btn-sm btn-circle btn-just-icon float-right" item_name="users-custom-fields-group" onClick="get_parameters(this)" data-toggle="modal" data-target="#create-update-users-custom-fields-group-modal"><i class="material-icons">edit</i></button>
-                             <!-- Delete Button -->
-                             <button type="button" name="delete" url="" id="$group['id']" class="delete btn btn-white btn-sm btn-circle btn-just-icon float-right" data-toggle="modal" data-target="#confirmModal"><i class="material-icons">delete</i></button>
-                         </div>
+                       
                      </div>
                  </div>
     
@@ -395,8 +330,8 @@
                                
                                  <tr>
                                      <td>{{$user->case_id}}</td>
-                                     <td> {{$name = DB::table('users')->where('id', $user->case_id)->value('Fname')}} 
-                                        {{$name = DB::table('users')->where('id', $user->case_id)->value('Lname')}}</td>
+                                     <td> {{$name = DB::table('users')->where('id', $user->case_id)->value('name')}} 
+                                        </td>
                                      <td>
                                          <!-- Attributes Button -->
                                          <a href={{"tasks/".$user->case_id}} class="btn btn-warning btn-sm btn-just-icon"><i class="material-icons">vpn_key</i></a>
@@ -409,6 +344,16 @@
                  </div>
              </div>
          </div>
+
+         <div class="col-md-12">
+            <div class="card">
+                <!-- Card Header -->
+                
+   
+                <!-- Card Body -->
+                
+            </div>
+        </div>
      </div>
          </div>
          <!-- END: Anamnese Tab -->
@@ -423,7 +368,7 @@
             </div>
 
             <!-- START QUICK SIDEBAR -->
-                <div include-html="inc/quick_sidebar.html"></div> 
+                 @include('components.sidebar')
             <!-- END QUICK SIDEBAR -->
 
         </div>

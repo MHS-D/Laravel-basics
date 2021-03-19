@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
-{
+{ //------------------------------------HITOS PROJECT--------------------------------
     public function getEmail()
     {
 

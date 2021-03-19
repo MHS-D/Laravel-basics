@@ -27,16 +27,16 @@
             </li>
             <!--Add 'active open' for activating-->
             
-                    <a href="#">
+            <li class="active open">
+                <a href="doctor">
                     <i class="fas fa-users"></i>
                     <span class="title">My Patients</span>
                     <span class="selected"></span>
                     </a>
             </li>
-            <li>
-                <li class="active open">
+            <li class="active open">
                 <a href="meetings"> 
-                <i class="fas fa-users></i>
+                <i class="fas fa-home"></i>
                 <span class="title">meetings Page</span>
                 <span class="selected"></span>
                 </a>

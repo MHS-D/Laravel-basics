@@ -4,7 +4,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=devide-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <title>HITOS | Home</title>
+        <title>{{ DB::table('website_settings')->value('title') }} | Home</title>
+        <link  rel="icon" href="images/{{ DB::table('website_settings')->value('logo')}}">
+
         <!-- Custom fonts for this template -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
         <!-- Bootstrap -->
@@ -16,11 +18,14 @@
     </head>
     <body>
         <header>
+            <h1 >
+                <a href="logout">logout</a>
+            </h1>
             <div class="container">
                 <nav>
                     <div class="nav-brand">
                         <a href="index.html">
-                            <img src="assets/img/logo.png" alt="">
+                            <img src="assets/img/logo.jpg" alt="">
                         </a>
                     </div>
 
