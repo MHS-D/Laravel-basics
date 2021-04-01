@@ -83,87 +83,42 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-envelope-open"></i>
                     <span class="badge badge-default">
-                    5 </span>
+                    {{count($messages)}} </span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <ul>
                         <li class="external">
-                            <h3>You have <span class="bold">7 New</span> Messages</h3>
-                            <a href="page_inbox.html">view all</a>
-                        </li>
-                        <li>
+                     </span>
+                    <h3>You have <span class="bold">{{count($messages)}} New</span> Messages</h3>
+                            <a href="contacts">view Contacts</a>
+                       
                             <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-                                <li>
-                                    <a href="inbox.html?a=view">
+                                @foreach ($messages as $message)
+
+                                <li> 
+                                    <a href="messages/{{$message->sen_id}}">
                                     <span class="photo">
                                     <img src="assets/img/media/profile/avatar1.jpg" class="img-circle" alt=""></img>
                                     </span>
                                     <span class="subject">
-                                    <span class="from">
-                                    Lisa Wong </span>
-                                    <span class="time">Just Now </span>
+                                    <span style="color: green " class="from"> <h1></h1>
+                                    {{DB::table('users')->where('id',$message->sen_id)->value('name')}}{{"  "}}{{$message->created_at}} <br></span>
+                                    <span style="color: red" class="time"> </span>
                                     </span>
                                     <span class="message">
-                                    Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+                                   {{$message->message}} </span> 
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="inbox.html?a=view">
-                                    <span class="photo">
-                                    <img src="assets/img/media/profile/avatar3.jpg" class="img-circle" alt="">
-                                    </span>
-                                    <span class="subject">
-                                    <span class="from">
-                                    Richard Doe </span>
-                                    <span class="time">16 mins </span>
-                                    </span>
-                                    <span class="message">
-                                    Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                             
+                                @endforeach 
+                                <span>
+                                    {{$messages->links()}}
+                                </span>
                     </ul>
-                    <ul class="dropdown-menu">
-                        <li class="external">
-                            <h3>You have <span class="bold">7 New</span> Messages</h3>
-                            <a href="page_inbox.html">view all</a>
-                        </li>
-                        <li>
-                            <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-                                <li>
-                                    <a href="inbox.html?a=view">
-                                    <span class="photo">
-                                    <img src="assets/img/media/profile/avatar1.jpg" class="img-circle" alt=""></img>
-                                    </span>
-                                    <span class="subject">
-                                    <span class="from">
-                                    Lisa Wong </span>
-                                    <span class="time">Just Now </span>
-                                    </span>
-                                    <span class="message">
-                                    Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="inbox.html?a=view">
-                                    <span class="photo">
-                                    <img src="assets/img/media/profile/avatar3.jpg" class="img-circle" alt="">
-                                    </span>
-                                    <span class="subject">
-                                    <span class="from">
-                                    Richard Doe </span>
-                                    <span class="time">16 mins </span>
-                                    </span>
-                                    <span class="message">
-                                    Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                         
+                   
                 </div>
-            </li>
+           
         <!-- END: Inbox -->
 
         <!-- START: Todo -->
@@ -171,7 +126,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-calendar"></i>
                     <span class="badge badge-default">
-                        {{count($parent)}} </span>
+                        {{count($parent)}} </span> 
                 </a> 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <ul class="extended tasks">

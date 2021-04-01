@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\contact;
 use App\Models\meetings;
+use App\Models\messages;
 use App\Models\task;
 use App\Models\User;
 use App\Models\website;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use ParagonIE\Sodium\Compat;
 
 class users extends Controller
 {
@@ -143,8 +146,7 @@ class users extends Controller
         }
       
         public function Dreg(Request $req){
-          
-          $req->validate([
+            $req->validate([
             'fname'=>'required ',
             'lname'=>'required ',
             'mname'=>'required ',
@@ -157,17 +159,17 @@ class users extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
-        ]); 
-        $file = $req->cert;
-        $filename = time().'.'.$file->extension();
-        $file->move(public_path('storage'),$filename);
+        ]);
+            $file = $req->cert;
+            $filename = time().'.'.$file->extension();
+            $file->move(public_path('storage'), $filename);
 
-        DB::table('users')->insert(
-          [
+            DB::table('users')->insert(
+                [
               'Fname'=>$req->fname,
               'Lname'=>$req->lname,
               'Mname'=>$req->mname,
-              'name'=>$req->fname." ".$req->lname." ".$req->mname,  
+              'name'=>$req->fname." ".$req->lname." ".$req->mname,
               'mobile'=>$req->mobile,
               'country'=>$req->country,
               'city'=>$req->city,
@@ -180,21 +182,27 @@ class users extends Controller
               'resset'=>0,
 
           ]
-          );
-          return back()->with('message', 'Doctor has been added Succesfully');
-
+            );
+            return back()->with('message', 'Doctor has been added Succesfully');
         }
+           
+        //----------------------- 1/4--------------------------------------------------       
         public function doctor(){
 
+          //----------------------- for doctor tasks notifications--------------------------------------------
           $drid = session('client_id');
           $dtasks=DB::table('tasks')->where('reciever_id',$drid)
                                     ->where('is_complete','no')
                                     ->get();
-          
+          // ------------------------------for parent tasks----------------------------------------------------
           $parent=DB::table('tasks')->where('reciever_id',$drid)
                                     ->where('type','parent')->get();
-            
-            return view('hitos.doctor',['dtasks'=>$dtasks,'parent'=>$parent]); 
+          // ------------------------------for doctor messages -------------------------------- 
+          $messages=messages::where('rec_id',$drid)->where('seen',null)->orderBy('created_at','desc')->paginate(7);
+
+          
+          
+            return view('hitos.doctor',compact('dtasks','parent','messages')); 
 
         }
       
@@ -289,5 +297,64 @@ class users extends Controller
 
         return redirect('doctor')->with('task_completed','The task has been completed thank you');
 
+      }
+
+      public function contacts()
+      {
+        $did = session('client_id');
+        $contacts=contact::where('user_id',$did)->get();
+
+          
+          return view('hitos.contacts',['contacts'=>$contacts]);
+      }
+
+      public function contact_messages($id)
+      {
+          $contact = contact::where('id',$id)->get();
+          $messages = messages::where('rec_id',$contact->user_id,'sen_id',$contact->contact_id)
+                      ->orderBy('created_at','asc')
+                      ->get();
+          return view('hitos.messages',['messages'=>$messages]);
+      }
+
+      public function messages($id){
+
+        $did = session('client_id');
+
+        messages::where('rec_id',$did)->where('sen_id',$id )->where('seen',null)->update(['seen'=> Carbon::now()]);
+
+        $messages_rec = messages::where('rec_id',$did)->where('sen_id',$id )
+                   ->orderBy('created_at','asc')
+                   ->get();
+
+                   $messages_send = messages::where('rec_id',$id)->where('sen_id',$did )
+                   ->orderBy('created_at','asc')
+                   ->get();
+
+              $messages= $messages_rec->merge($messages_send)->sortBy('created_at');
+
+                   $name=User::where('id',$id)->value('name');
+                   $last_message= DB::table('messages')->where('rec_id',$did)
+                                   ->where('sen_id',$id)->latest('created_at')->value('message');
+        
+ return view('hitos.messages',compact('messages','name','last_message','id','did'));
+ 
+      }
+
+      public function send_Message(Request $req)
+      {
+        $req->validate([
+          'message' =>'required|min: 1'
+        ]);
+
+        messages::insert([
+          'rec_id' => $req->send_to,
+          'sen_id' => $req->me,
+          'message'=>$req->message,
+          'created_at'=>Carbon::now(),
+          
+        ]);
+
+        return back();
       }
     }
