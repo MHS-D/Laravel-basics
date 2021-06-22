@@ -19,7 +19,7 @@ class database extends Controller
 
         $user= new User;
         $user->username=$req->username;
-        $user->password=$req->password;
+        $user->password= $req->password;
         $user->number=$req->number;
         $user->save();
         return redirect('list');

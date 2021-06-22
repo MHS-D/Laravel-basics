@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\database;
 use App\Http\Controllers\forgotpassword;
 use App\Http\Controllers\hitos_payment;
+use App\Http\Controllers\Realtime;
+use App\Http\Controllers\TravelController;
 use App\Http\Controllers\uploadfile;
 use App\Http\Controllers\userAuth;
 use Illuminate\Support\Facades\Route;
@@ -48,14 +50,14 @@ echo $data; */
 
 Route::get('hello/{anything}', function ($any) {
     echo $any;
-    return view('hello',['anything'=>$any]);// this variable go with you to the hello page 
+    return view('hello',['anything'=>$any]);// this variable go with you to the hello page
 });
 Route::get('/', function () {
-    return view('welcome'); 
+    return view('welcome');
 });
 Route::get('/about', function () {
     // return view('about');
-    
+
         return redirect('welcome');
 });
 
@@ -82,10 +84,10 @@ Route::put("put",[users::class,'login']);
 
 
 Route::view('about', 'about')->middleware('pageprot');
-Route::view('noaccess', 'noaccess'); 
+Route::view('noaccess', 'noaccess');
 
 Route::group(['middleware' => ['protectedPages']], function () {
-    Route::view('home', 'home'); 
+    Route::view('home', 'home');
 });
 
 Route::get("data",[users::class,'db']);
@@ -98,7 +100,7 @@ Route::get("dbget",[users::class,'getdata']);
 
 Route::post("userlog",[userAuth::class,'userlogin']);
 
-Route::view('profile', 'profile'); 
+Route::view('profile', 'profile');
 
 Route::get('logout', function () {
 
@@ -117,10 +119,10 @@ Route::get('login', function () {
     return view('login');
 });
 
-Route::view('add', 'add'); 
+Route::view('add', 'add');
 Route::post("addmember",[users::class,'addmember']);
 
-Route::view('upload', 'upload'); 
+Route::view('upload', 'upload');
 Route::post("upload",[uploadfile::class,'index']);
 
 Route::get('/profile/{lang}', function ($lang) {
@@ -161,7 +163,7 @@ Route::get('relation2',[database::class,'onetomany']);
 Route::get('bind/{key:username}',[database::class,'binding']);
 
 
-               
+
 
 
 //------------------add image-----------
@@ -186,7 +188,7 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
 
     Route::view('index', 'hitos.hitosHome');
     //---------------------------------hitos logout------------------
-    Route::get('logout',[users::class,'logout']);
+    Route::get('logout',[users::class,'logout'])->name('logout');
 
     // -----------------------------forget password ------------------------------
     Route::get('forget-password',[ForgotPasswordController::class, 'getEmail'] )->name('forget-password');
@@ -200,31 +202,31 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
      Route::view('pass', 'passwords.pass2');
      Route::post('/reset',[ResetPasswordController::class,'ressetpass2']);
      //-----------------------------------------------------------------------
-    
+
      //---------------------------------hitos register------------------
-     Route::view('Preg', 'hitos.patient-reg');  
+     Route::view('Preg', 'hitos.patient-reg');
      Route::post('patient-reg',[users::class,'Preg'] );
 
-     Route::view('Dreg', 'hitos.doctor-reg');  
+     Route::view('Dreg', 'hitos.doctor-reg');
      Route::post('doctor-reg',[users::class,'Dreg'] );
 
      //---------------------------------hitos tasks (tasks and notifications)------------------
-    Route::get('doctor', [users::class,'doctor']);  
+    Route::get('doctor', [users::class,'doctor']);
     Route::get('tasks/{id}', [users::class,'tasks']);
     Route::get('task_complete/{id}', [users::class,'task_complete']);
     Route::post('is_complete', [users::class,'task_is_complete']);
 
-    
+
      //---------------------------------Hitos website settings (name and logo)------------------
-     Route::view('settings', 'hitos.site');  
-     Route::post('name_logo', [users::class,'settings']);  
-    
+     Route::view('settings', 'hitos.site');
+     Route::post('name_logo', [users::class,'settings']);
+
      //---------------------------------Hitos Meetings ------------------
-     Route::get('meetings', [users::class,'meeting']);  
+     Route::get('meetings', [users::class,'meeting']);
         Route::get('decline/{id}',[users::class,'meetDecline']);
         Route::post('meetAccept',[users::class,'meetAccept']);
 
-        Route::get('patient', [users::class,'Patient_meet']);  
+        Route::get('patient', [users::class,'Patient_meet']);
         Route::get('meetdelete/{id}',[users::class,'meetDelete']);
 
       //---------------------------------Hitos payment (stripe)------------------
@@ -238,7 +240,54 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
 
 
 
+
+
+      //==========================Travel=========================================================
+
+      Route::prefix('travel')->group(function () {
+        //view travel main page for all users except arabic dr
+        Route::get('',[TravelController::class,'travel_view'])->name('travel.view');
+        //travel form for arabic doctor
+        Route::get('case',[TravelController::class,'case_view'])->name('case.view');
+        //travel request
+        Route::get('request-form/{id}',[TravelController::class,'travel_first_request'])->name('travel.FirstRequest','id');
+        Route::post('send-request',[TravelController::class,'send_request'])->name('travel.sendRequest');
+        Route::get('getmedical_center/{id}',[TravelController::class,'get_medical_center']);
+        // german doctor action
+        Route::get('doctor_accept/{id}',[TravelController::class,'request_accept'])->name('travel.accept','id');
+        Route::get('doctor_deny/{id}',[TravelController::class,'request_denied'])->name('travel.denied','id');
+        // delete request if deny (by arabic dr)
+         Route::get('request-delete/{id}',[TravelController::class,'request_delete'])->name('travel.delete','id');
+        // set salary by secertary
+        Route::post('set-salary',[TravelController::class,'set_salary'])->name('travel.salary');
+        // payment
+        Route::get('payment/{id}/{amount}',[TravelController::class,'checkout'])->name('travel.payment.view','id','amount');
+        Route::post('after-payment',[TravelController::class,'afterpayment'])->name('travel.credit-card');
+        Route::post('after-payment',[TravelController::class,'afterpayment'])->name('travel.credit-card');
+        // airline office
+        Route::get('to-airline-office/{id}',[TravelController::class,'to_airline_office'])->name('travel.to.AirlineOffice','id');
+        Route::get('travel-bill-download/{id}',[TravelController::class,'bill_download'])->name('travel.bill.download','id');
+
+
+
+
+    });
+
+
  });
+
+
+
+
+
+
+ //--------------------------Pusher--------------------
+ Route::view('test', 'pusher.add');
+ Route::post('realtime',[Realtime::class,'notification']);
+ //--------------------------------------------------------
+
+
+
 
 
 

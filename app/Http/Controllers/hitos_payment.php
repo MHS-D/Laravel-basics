@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class hitos_payment extends Controller
 {
-    public function checkout($id)
-    {   
+    public function checkout($id,$amount)
+    {
         // Enter Your Stripe Secret
         \Stripe\Stripe::setApiKey('sk_test_51IP5ilLntGb6Ni6L3rt5kZUC3B5fOOvRndyiZcG5sJWgoz1wWt4CqoKs3ddMYo8fhC28120mgG3VerdGkJXaCW2Y00mqPrckZo');
-        		
+
 		$amount = 500;
         $temp = $amount;
 		$amount *= 100;
         $amount = (int) $amount;
-        
+
         $payment_intent = \Stripe\PaymentIntent::create([
 			'description' => 'Stripe Test Payment',
 			'amount' => $amount,

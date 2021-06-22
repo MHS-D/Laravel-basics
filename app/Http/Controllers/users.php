@@ -21,7 +21,7 @@ class users extends Controller
     public  function index($user){
 
             echo $user;
-            
+
         echo "  hello from controller";
     }
 
@@ -29,9 +29,9 @@ class users extends Controller
 
         $data = ['msh','osama','ali','morse'];
         return view("users",['values'=>$data]);
-    
+
       }
-    
+
       public function login(Request $req){
 
         $req->validate([
@@ -42,7 +42,7 @@ class users extends Controller
         return $req->input();
       }
 
-     
+
 
       public  function db(){
 
@@ -51,7 +51,7 @@ class users extends Controller
 
       public  function getdata(){
 
-        return User::all();  
+        return User::all();
         }
 
       public  function http(){
@@ -68,14 +68,14 @@ class users extends Controller
         return redirect('add');
         }
 
-      //-----------------------------HITOS PROJECT---------------------------   
-        
+      //-----------------------------HITOS PROJECT---------------------------
+
         public function hitosLog(Request $req){
 
           $req->validate([
               'email'=>'required|email ',
               'password'=>'required  '
-          ]); 
+          ]);
           $email = DB::table('users')->where('email', $req->email)->value('email');
           $id = DB::table('users')->where('email', $req->email)->value('id');
           $pass = DB::table('users')->where('email', $req->email)->value('password');
@@ -89,6 +89,8 @@ class users extends Controller
 
               $reset = DB::table('users')->where('email', $req->email)->value('resset');
               $type = DB::table('users')->where('email', $req->email)->value('type');
+              $role = DB::table('rp_users_roles')->where('user_id', $id)->value('role_id');
+
 
                 if($reset==1){
                   User::where('email', $email)
@@ -98,8 +100,13 @@ class users extends Controller
                 if ($type == 'admin')
                 return redirect('index');
 
-                else if ($type == 'doctor')
-                return redirect('doctor');
+                $country_code  = DB::table('users')->where('id',session('client_id'))->value('country_code');
+
+                if ($role == '2' && $country_code != 49 )
+                return redirect()->route('case.view');
+
+                if ($role == '2' || $role == '3' || $role == '4'  )
+                return redirect()->route('travel.view');
 
                 if ($type == 'patient')
                 return redirect('patient');
@@ -108,12 +115,12 @@ class users extends Controller
            else {
 
             return redirect('loginP')->with('error', 'Oppes! You have entered invalid email or password');
-           } 
-          
-        } 
-        
+           }
+
+        }
+
         public function Preg(Request $req){
-          
+
           $req->validate([
             'fname'=>'required ',
             'lname'=>'required ',
@@ -124,13 +131,13 @@ class users extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
-        ]); 
+        ]);
         DB::table('users')->insert(
           [
             'Fname'=>$req->fname,
             'Lname'=>$req->lname,
               'Mname'=>$req->mname,
-              'name'=>$req->fname." ".$req->lname." ".$req->mname,  
+              'name'=>$req->fname." ".$req->lname." ".$req->mname,
               'mobile'=>$req->mobile,
               'country'=>$req->country,
               'city'=>$req->city,
@@ -144,7 +151,7 @@ class users extends Controller
           return back()->with('message', 'Patient has been added Succesfully');
 
         }
-      
+
         public function Dreg(Request $req){
             $req->validate([
             'fname'=>'required ',
@@ -185,8 +192,8 @@ class users extends Controller
             );
             return back()->with('message', 'Doctor has been added Succesfully');
         }
-           
-        //----------------------- 1/4--------------------------------------------------       
+
+        //----------------------- 1/4--------------------------------------------------
         public function doctor(){
 
           //----------------------- for doctor tasks notifications--------------------------------------------
@@ -197,21 +204,21 @@ class users extends Controller
           // ------------------------------for parent tasks----------------------------------------------------
           $parent=DB::table('tasks')->where('reciever_id',$drid)
                                     ->where('type','parent')->get();
-          // ------------------------------for doctor messages -------------------------------- 
+          // ------------------------------for doctor messages --------------------------------
           $messages=messages::where('rec_id',$drid)->where('seen',null)->orderBy('created_at','desc')->paginate(7);
 
-          
-          
-            return view('hitos.doctor',compact('dtasks','parent','messages')); 
+
+
+            return view('hitos.doctor',compact('dtasks','parent','messages'));
 
         }
-      
+
 
         public function tasks($id){
-          
+
           $tasks=DB::table('tasks')->where('case_id',$id)->get();
-         
-            return view('hitos.tasks',['tasks'=>$tasks]); 
+
+            return view('hitos.tasks',['tasks'=>$tasks]);
 
         }
 
@@ -246,7 +253,7 @@ class users extends Controller
         $meetings=DB::table('meetings')->where('doctor_id',$did)->get();
 
 
-        return view('hitos.meeting',['meetings'=>$meetings]); 
+        return view('hitos.meeting',['meetings'=>$meetings]);
       }
 
       function meetAccept(Request $req){
@@ -259,7 +266,7 @@ class users extends Controller
         meetings::where('id',$req->id)->update(['time'=>$req->time,'date'=>$req->date,'is_accepted'=>'yes']);
         return back()->with('message2', 'configrations has been updated Succesfully');
       }
-      
+
       function meetDecline($id){
         meetings::where('id',$id)->update(['is_accepted'=>'no']);
         return back()->with('message', 'meet has been deleted Succesfully');
@@ -270,9 +277,9 @@ class users extends Controller
 
         $meetings=DB::table('meetings')->where('patient_id',$did)->get();
 
-        return view('hitos.Pmeet',['meetings'=>$meetings]); 
+        return view('hitos.Pmeet',['meetings'=>$meetings]);
       }
-      
+
       function meetDelete($id){
         meetings::where('id',$id)->delete();
         return back()->with('message', 'meet has been deleted Succesfully');
@@ -291,7 +298,7 @@ class users extends Controller
       public function task_is_complete(Request $req)
       {
         $req->validate([
-          'complete' => 'required'   
+          'complete' => 'required'
       ]);
         DB::table('tasks')->where('id',$req->id)->update(['is_complete'=>'yes','completed_date'=>Carbon::now()]);
 
@@ -304,7 +311,7 @@ class users extends Controller
         $did = session('client_id');
         $contacts=contact::where('user_id',$did)->get();
 
-          
+
           return view('hitos.contacts',['contacts'=>$contacts]);
       }
 
@@ -334,11 +341,11 @@ class users extends Controller
               $messages= $messages_rec->merge($messages_send)->sortBy('created_at');
 
                    $name=User::where('id',$id)->value('name');
-                   $last_message= DB::table('messages')->where('rec_id',$did)
+                   $last_message= DB::table('messages')->where('r ec_id',$did)
                                    ->where('sen_id',$id)->latest('created_at')->value('message');
-        
+
  return view('hitos.messages',compact('messages','name','last_message','id','did'));
- 
+
       }
 
       public function send_Message(Request $req)
@@ -352,7 +359,7 @@ class users extends Controller
           'sen_id' => $req->me,
           'message'=>$req->message,
           'created_at'=>Carbon::now(),
-          
+
         ]);
 
         return back();

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
     <!-- START: Header -->
-        <div include-html="inc/header.html"></div> 
+        <div include-html="inc/header.html"></div>
     <!-- END: Header -->
-    
+
 
     <body class="page-header-fixed page-quick-sidebar-over-content page-style-square">
         <!-- START: Pre-Loader -->
@@ -66,11 +66,11 @@
                                     {{$task->title}} </span>
                                     </a>
                                 </li>
-                                
+
                                 @endforeach
-                             
-                            
-                           
+
+
+
                             </ul>
                         </li>
                     </ul>
@@ -91,11 +91,11 @@
                      </span>
                     <h3>You have <span class="bold">{{count($messages)}} New</span> Messages</h3>
                             <a href="contacts">view Contacts</a>
-                       
+
                             <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
                                 @foreach ($messages as $message)
 
-                                <li> 
+                                <li>
                                     <a href="messages/{{$message->sen_id}}">
                                     <span class="photo">
                                     <img src="assets/img/media/profile/avatar1.jpg" class="img-circle" alt=""></img>
@@ -106,19 +106,19 @@
                                     <span style="color: red" class="time"> </span>
                                     </span>
                                     <span class="message">
-                                   {{$message->message}} </span> 
+                                   {{$message->message}} </span>
                                     </a>
                                 </li>
-                             
-                                @endforeach 
+
+                                @endforeach
                                 <span>
                                     {{$messages->links()}}
                                 </span>
                     </ul>
-                         
-                   
+
+
                 </div>
-           
+
         <!-- END: Inbox -->
 
         <!-- START: Todo -->
@@ -126,8 +126,8 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-calendar"></i>
                     <span class="badge badge-default">
-                        {{count($parent)}} </span> 
-                </a> 
+                        {{count($parent)}} </span>
+                </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <ul class="extended tasks">
                         <li class="external">
@@ -139,7 +139,7 @@
                                 @foreach ($parent as $p)
 
                                 @if ($p->is_complete == 'no')
-                               
+
                                 <li>
                                     <a href="javascript:;">
                                         <span class="task">
@@ -162,7 +162,7 @@
             </li>
         <!-- END: Todo -->
 
-        <!-- START: User --> 
+        <!-- START: User -->
             <li class="nav-item dropdown dropdown-user">
                 <a class="nav-link dropdown-toggle dropdown-no-arrow" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="navbar-profile-img" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/26/02/47/people-2442565_960_720.jpg');"></span>
@@ -223,7 +223,7 @@
 
         <div class="clearfix"></div>
         <div class="page-container">
-            
+
             <!-- START: Sidebar -->
             @include('components.sidebar')
             <div class="page-content-wrapper">
@@ -242,12 +242,12 @@
                         <!-- START: Body Model -->
                             <div include-html="inc/human_body.html" class="col-3"></div>
  <!-- END: Body Mode
- 
+
 <!-- ------------------------------------------------------------------------------------------------------------ -->
  <!-- START: Case Content -->
  <div class="col-6">
      <!-- START: Tabs -->
-         <span include-html="inc/tabs.html"></span> 
+         <span include-html="inc/tabs.html"></span>
      <!-- START: Tab
      <div class="tab-content" id="myTabContent">
          <!-- START: Anamnese Tab -->
@@ -255,7 +255,7 @@
      <!-- Create Anamnese Form -->
      <h3>Create Anamnese Form</h3>
      <button type="button" parm_id="$group['id']" class="create btn btn-info" item_name="users-custom-field" onClick="get_parameters(this)" data-toggle="modal" data-target="#create-update-custom-fields-group-modal"><i class="material-icons">add</i> Create Form Section</button>
-     <div class="row"> 
+     <div class="row">
          <div class="col-md-12">
              <div class="card">
                  <!-- Card Header -->
@@ -265,10 +265,10 @@
                              <h4 class="card-title ">patient Information</h4>
                              <p class="card-category"> Here is a subtitle for this table</p>
                          </div>
-                       
+
                      </div>
                  </div>
-    
+
                  <!-- Card Body -->
                  <div class="card-body">
                      <table class="table dataTable">
@@ -277,20 +277,20 @@
                                  <th style="min-width:100px;">Name</th>
                                  <th style="min-width:150px;">Actions</th>
                              </tr>
-                        
+
                          <tbody>
-                           
+
                                @foreach ($dtasks as $user)
-                                   
-                               
+
+
                                  <tr>
                                      <td>{{$user->case_id}}</td>
-                                     <td> {{$name = DB::table('users')->where('id', $user->case_id)->value('name')}} 
+                                     <td> {{$name = DB::table('users')->where('id', $user->case_id)->value('name')}}
                                         </td>
                                      <td>
                                          <!-- Attributes Button -->
                                          <a href={{"tasks/".$user->case_id}} class="btn btn-warning btn-sm btn-just-icon"><i class="material-icons">vpn_key</i></a>
-                                        
+
                                      </td>
                                  </tr>
                                  @endforeach
@@ -303,10 +303,10 @@
          <div class="col-md-12">
             <div class="card">
                 <!-- Card Header -->
-                
-   
+
+
                 <!-- Card Body -->
-                
+
             </div>
         </div>
      </div>
@@ -330,7 +330,7 @@
     </body>
 
     <!-- START: Footer -->
-        <div include-html="inc/footer.html"></div> 
+        <div include-html="inc/footer.html"></div>
     <!-- START: Footer -->
 
     <!-- START: Scripts -->
@@ -358,7 +358,7 @@
         <script src="inc/scripts.js" type="text/javascript"></script>
 
         <script>
-            jQuery(document).ready(function() {       
+            jQuery(document).ready(function() {
                 Metronic.init(); // init metronic core components
                 Layout.init(); // init current layout
                 QuickSidebar.init(); // init quick sidebar
@@ -372,7 +372,7 @@
     <!-- END: Scripts -->
 
     <!-- START: Modals-->
-        <div include-html="inc/modals.html"></div> 
+        <div include-html="inc/modals.html"></div>
     <!-- END: Modals-->
 </html>
 
@@ -397,7 +397,7 @@
               elmnt.removeAttribute("include-html");
               includeHTML();
             }
-          }      
+          }
           xhttp.open("GET", file, true);
           xhttp.send();
           /*exit the function:*/
