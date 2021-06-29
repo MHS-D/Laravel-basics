@@ -92,6 +92,9 @@ class users extends Controller
               $role = DB::table('rp_users_roles')->where('user_id', $id)->value('role_id');
 
 
+              $req->session()->put('role', $role);
+
+
                 if($reset==1){
                   User::where('email', $email)
                   ->update(['resset' => '0']);
@@ -105,7 +108,7 @@ class users extends Controller
                 if ($role == '2' && $country_code != 49 )
                 return redirect()->route('case.view');
 
-                if ($role == '2' || $role == '3' || $role == '4'  )
+                if ($role == '2' || $role == '3' || $role == '4' || $role == '5' || $role == '6'  )
                 return redirect()->route('travel.view');
 
                 if ($type == 'patient')

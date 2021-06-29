@@ -245,6 +245,7 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
       //==========================Travel=========================================================
 
       Route::prefix('travel')->group(function () {
+
         //view travel main page for all users except arabic dr
         Route::get('',[TravelController::class,'travel_view'])->name('travel.view');
         //travel form for arabic doctor
@@ -256,7 +257,7 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
         // german doctor action
         Route::get('doctor_accept/{id}',[TravelController::class,'request_accept'])->name('travel.accept','id');
         Route::get('doctor_deny/{id}',[TravelController::class,'request_denied'])->name('travel.denied','id');
-        // delete request if deny (by arabic dr)
+        // delete request
          Route::get('request-delete/{id}',[TravelController::class,'request_delete'])->name('travel.delete','id');
         // set salary by secertary
         Route::post('set-salary',[TravelController::class,'set_salary'])->name('travel.salary');
@@ -267,6 +268,27 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
         // airline office
         Route::get('to-airline-office/{id}',[TravelController::class,'to_airline_office'])->name('travel.to.AirlineOffice','id');
         Route::get('travel-bill-download/{id}',[TravelController::class,'bill_download'])->name('travel.bill.download','id');
+
+
+        Route::prefix('file')->group(function () {
+             // Files needed form
+            Route::get('-needed/{id}/{type}', [TravelController::class,'files_needed_form'])->name('travel.filesNeeded','id','type');
+            Route::post('-needed-action', [TravelController::class,'files_needed_action'])->name('travel.filesNeeded.action');
+             // delete airline file
+             Route::get('-delete/{id}',[TravelController::class,'file_delete'])->name('travel.file.delete','id');
+             // edit or show airline file
+             Route::get('/{id}',[TravelController::class,'edit_show_files_info'])->name('travel.file.info','id');
+             Route::post('-action',[TravelController::class,'edit_show_files_action'])->name('travel.file.action');
+             // accept file by airline oofice
+             Route::get('-accept/{id}',[TravelController::class,'file_accept'])->name('travel.file.accept','id');
+             // send message by airline office about the files
+             Route::post('-message',[TravelController::class,'file_message'])->name('travel.file.message');
+
+        });
+        // accept request by
+        Route::post('Accept-request',[TravelController::class,'Accept_request'])->name('travel.request.accept');
+        // Traveled patient
+        Route::get('traveled/{id}',[TravelController::class,'traveled'])->name('travel.traveled','id');
 
 
 

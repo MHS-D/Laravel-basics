@@ -5,23 +5,7 @@
 
 
     <body class="page-header-fixed page-quick-sidebar-over-content page-style-square">
-        <!-- START: Pre-Loader -->
-        <div class="page-loader-wrapper" id="pageloader">
-            <div class="loader">
-                <div class="preloader">
-                    <div class="spinner-layer pl-red">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-                <p>Please wait...</p>
-            </div>
-        </div>
-        <!-- END: Pre-Loader -->
+
 
         <!-- START: NavBar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -72,6 +56,58 @@
      <h3>Create Anamnese Form</h3>
      <button type="button" parm_id="$group['id']" class="create btn btn-info" item_name="users-custom-field" onClick="get_parameters(this)" data-toggle="modal" data-target="#create-update-custom-fields-group-modal"><i class="material-icons">add</i> Create Form Section</button>
      <a href="{{ route('logout') }}">logout</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     {{-- ====================================================================================================================== --}}
+
      <div class="row">
          <div class="col-md-12">
              <div class="card">
@@ -125,6 +161,9 @@
                                             @elseif ($check->is_accepted == -1)
                                             denied
                                             <a href="{{ route('travel.delete',['id'=>$check->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: red" class="material-icons">D</i></a>
+                                            @elseif ($check->is_accepted == 3)
+                                            Patient on his way
+                                            <a href="{{ route('travel.delete',['id'=>$check->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: red" class="material-icons">D</i></a>
                                             @else
                                             Request Sent
                                             @endif
@@ -144,6 +183,59 @@
                  </div>
              </div>
          </div>
+
+
+{{-- ====================================================================================================================== --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
          <div class="col-md-12">
             <div class="card">

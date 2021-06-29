@@ -6,23 +6,7 @@
 
 
     <body class="page-header-fixed page-quick-sidebar-over-content page-style-square">
-        <!-- START: Pre-Loader -->
-        <div class="page-loader-wrapper" id="pageloader">
-            <div class="loader">
-                <div class="preloader">
-                    <div class="spinner-layer pl-red">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-                <p>Please wait...</p>
-            </div>
-        </div>
-        <!-- END: Pre-Loader -->
+
 
         <!-- START: NavBar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,11 +23,9 @@
 </nav>
         <!-- END: NavBar -->
 
-        <div class="clearfix"></div>
-        <div class="page-container">
+
 
             <!-- START: Sidebar -->
-            @include('components.sidebar')
             <div class="page-content-wrapper">
                 <div class="page-content">
                     <h3 class="page-title">
@@ -57,8 +39,8 @@
                             {{ session()->get('task_completed') }}
                         </div>
                         @endif
+                    </div>
                         <!-- START: Body Model -->
-                            <div include-html="inc/human_body.html" class="col-3"></div>
  <!-- END: Body Mode
 
 <!-- ------------------------------------------------------------------------------------------------------------ -->
@@ -103,6 +85,58 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {{-- ================================================================================================================= --}}
 {{-- ============================================ Travel Request Table ============================================--}}
      <div class="row">
@@ -112,7 +146,7 @@
                  <div class="card-header card-header-success">
                      <div class="row">
                          <div class="col">
-                             <h4 class="card-title ">Travel Information</h4>
+                             <h4 class="card-title ">Travel Requests Information</h4>
                              <p class="card-category"> Here is a subtitle for this table</p>
                          </div>
 
@@ -146,7 +180,7 @@
                             @if ($type == 2)
 
                                 @foreach ($requests  as $request)
-                                    @if ($request->is_accepted != -1)
+                                    @if ($request->is_accepted != -1 && $request->is_accepted != 2){{-- -1 Denied / 2 Accepted by secertary--}}
                                     <tr>
                                         <td>{{$request->id}}</td>
                                         <td>{{$request->case_id}}</td>
@@ -163,6 +197,7 @@
                                             @elseif ($request->is_accepted == 2)
                                             Paid and sent to airline office
                                             @elseif ($request->is_accepted == 3)
+                                            Patient on his way to you <br>
                                             <a href="{{ route('travel.delete',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: red" class="material-icons">D</i></a>
                                             @else
                                             <a href="{{ route('travel.accept',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: green" class="material-icons">A</i></a>
@@ -199,10 +234,15 @@
                                         <a href="{{ route('travel.payment.view',['id'=>$request->id,'amount'=>$request->payment_amount]) }}" class="btn btn-warning btn-sm btn-just-icon">
                                             <i style="color: yellow" class="material-icons">P</i></a>
                                         @endif
-                                          @elseif ($request->is_accepted == 2)
-                                          Sent to airline office
+                                          @elseif ($request->is_accepted >= 2)
+
+                                           {{$request->is_accepted == 3? 'patient on his way':'Sent to airline office'  }}
                                           <a href="{{ route('travel.bill.download',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
-                                            <i style="color: yellow" class="material-icons">B</i></a>
+                                            <i style="color: yellow" class="material-icons">B</i></a> {{-- Download bill --}}
+
+                                            <a href="{{ route('travel.delete',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                                                <i style="color: red" class="material-icons">D</i></a>{{-- Delete --}}
+
                                           @elseif ($request->is_accepted == -1)
                                           Request is Denied
                                           @else
@@ -212,8 +252,7 @@
 
                                     </td>
                                 </tr>
-
-                            @endforeach
+                                @endforeach
                          @endif
                           {{-- ================================================================= --}}
 
@@ -277,171 +316,318 @@
 {{-- =============================================================================================================== --}}
 {{-- ================================================================================================================ --}}
  {{-- ==================================== AIRLINE TABLE ========================================================== --}}
-  <div class="row">
-         <div class="col-md-12">
-             <div class="card">
-                 <!-- Card Header -->
-                 <div class="card-header card-header-success">
-                     <div class="row">
-                         <div class="col">
-                             <h4 class="card-title ">Travel Information</h4>
-                             <p class="card-category"> Here is a subtitle for this table</p>
-                         </div>
-
-                     </div>
-                 </div>
-
-                 <!-- Card Body -->
-                 <div class="card-body">
-                    @if (session()->has('message'))
-                    <div class="" style="color: green">
-                        {{ session()->get('message') }}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!-- Card Header -->
+            <div class="card-header card-header-success">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="card-title ">Airline trip Information</h4>
+                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
-                    @endif
-                     <table class="table dataTable">
-                             <tr>
-                                 <th style="min-width:100px;">id</th>
-                                 <th style="min-width:100px;">case id</th>
-                                 <th style="min-width:100px;">patient name</th>
-                                 <th style="min-width:100px;">Medical center</th>
-                                 <th style="min-width:150px;">Reason</th>
-                                 <th style="min-width:150px;">is urgent</th>
-                                 <th style="min-width:150px;">Need oxygen</th>
-                                 <th style="min-width:150px;">Need chair</th>
-                                 @if ($type == 4 || $type == 3)
-                                 <th style="min-width:150px;">Hospital Salary</th>
-                                 @endif
-                                 <th style="min-width:150px;">Actions</th>
-                             </tr>
-                         <tbody>
-                             {{--===================== german doctor ============================== --}}
-                            @if ($type == 2)
 
-                                @foreach ($requests  as $request)
-                                    @if ($request->is_accepted != -1)
-                                    <tr>
-                                        <td>{{$request->id}}</td>
-                                        <td>{{$request->case_id}}</td>
-                                        <td> {{DB::table('users')->where('id', $request->patient_id)->value('name')}} </td>
-                                        <td> {{DB::table('medical_centers')->where('id', $request->medical_center_id)->value('name')}} </td>
-                                        <td>{{$request->reason}}</td>
-                                        <td>{{$request->is_urgent==1?'yes':'no'}}</td>
-                                        <td>{{$request->oxygen==1?'yes':'no'}}</td>
-                                        <td>{{$request->chair==1?'yes':'no'}}</td>
-                                        <td>
+                </div>
+            </div>
 
-                                            @if ($request->is_accepted == 1)
-                                            Request Sent to secertary
-                                            @elseif ($request->is_accepted == 2)
-                                            Paid and sent to airline office
-                                            @elseif ($request->is_accepted == 3)
-                                            <a href="{{ route('travel.delete',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: red" class="material-icons">D</i></a>
-                                            @else
-                                            <a href="{{ route('travel.accept',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: green" class="material-icons">A</i></a>
-                                            <a href="{{ route('travel.denied',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color: red" class="material-icons">D</i></a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                             @endif
+            {{-- Success --}}
+            <div class="card-body">
+               @if (session()->has('message2'))
+               <div class="" style="color: green">
+                   {{ session()->get('message2') }}
+               </div>
+               @endif
 
-                               {{--===================== patient  ============================== --}}
-                            @if ($type == 3)
-
-                            @foreach ($requests  as $request)
-                                <tr>
-                                    <td>{{$request->id}}</td>
-                                    <td>{{$request->case_id}}</td>
-                                    <td> {{DB::table('users')->where('id', $request->patient_id)->value('name')}} </td>
-                                    <td> {{DB::table('medical_centers')->where('id', $request->medical_center_id)->value('name')}} </td>
-                                    <td>{{$request->reason}}</td>
-                                    <td>{{$request->is_urgent==1?'yes':'no'}}</td>
-                                    <td>{{$request->oxygen==1?'yes':'no'}}</td>
-                                    <td>{{$request->chair==1?'yes':'no'}}</td>
-                                    <td>{{$request->payment_amount==null?'Not Set Yet': $request->payment_amount }}</td>
-                                    <td>
-                                    @if ($request->payed == null)
-                                        @if ($request->is_accepted == 1 && $request->payment_amount==null)
-                                        Accepted by dr, waiting Salary set
-                                        @elseif ($request->is_accepted == 1 && $request->payment_amount!=null)
-                                        <a href="{{ route('travel.payment.view',['id'=>$request->id,'amount'=>$request->payment_amount]) }}" class="btn btn-warning btn-sm btn-just-icon">
-                                            <i style="color: yellow" class="material-icons">P</i></a>
-                                        @endif
-                                          @elseif ($request->is_accepted == 2)
-                                          Sent to airline office
-                                          <a href="{{ route('travel.bill.download',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
-                                            <i style="color: yellow" class="material-icons">B</i></a>
-                                          @elseif ($request->is_accepted == -1)
-                                          Request is Denied
-                                          @else
-                                          Request sent
-                                    @endif
-
-
-                                    </td>
-                                </tr>
-
-                            @endforeach
-                         @endif
-
-
-
-                {{--===================== secretary  ============================== --}}
-                                 {{-- if secretary --}}
-                    @if ($type == 4)
-                         @foreach ($requests  as $request)
-                            @if ($request->is_accepted == 1)
-                            <tr>
-                            <form action="{{ route('travel.salary') }}" method="POST">
-                                @csrf
-                                <td>{{$request->id}}</td>
-                                <td>{{$request->case_id}}</td>
-                                <td> {{DB::table('users')->where('id', $request->patient_id)->value('name')}} </td>
-                                <td> {{DB::table('medical_centers')->where('id', $request->medical_center_id)->value('name')}} </td>
-                                <td>{{$request->reason}}</td>
-                                <td>{{$request->is_urgent==1?'yes':'no'}}</td>
-                                <td>{{$request->oxygen==1?'yes':'no'}}</td>
-                                <td>{{$request->chair==1?'yes':'no'}}</td>
-
-                                @if ($request->payment_amount == null)
-                                <td><input type="number" name="salary" placeholder="enter salary amount"></td>
-                                <span style="color: red">@error('salary'){{ $message }}@enderror</span>
-                                <input type="hidden" name="id" value="{{ $request->id }}">
-                                @else
-                                <td>{{$request->payment_amount}}</td>
-                                @endif
-
-                                <td>
-                                    @if ($request->payment_amount== null)
-                                    <button type="submit" >Send To User</button>
-                                    @else
-                                        @if ($request->payed == 1)
-                                        <a href="{{ route('travel.to.AirlineOffice',['id'=>$request->id]) }}" class="btn btn-warning btn-sm btn-just-icon"><i style="color:blue" class="material-icons">S</i></a>
-                                        @else
-                                        Waiting for payment
-                                        @endif
-                                    @endif
-
-                                </td>
-                            </form>
-                            </tr>
+               {{-- Errors --}}
+               <div class="card-body">
+                @if (session()->has('error'))
+                <div class="" style="color: red">
+                    {{ session()->get('error') }}
+                </div>
+                @endif
+                <table class="table dataTable">
+                        <tr>
+                            <th style="min-width:100px;">id</th>
+                            <th style="min-width:100px;">case id</th>
+                            <th style="min-width:100px;">patient name</th>
+                            @if ($type != 2)
+                            <th style="min-width:100px;">patient number</th>
+                            <th style="min-width:100px;">doctor name</th>
                             @endif
-                        @endforeach
-                    @endif
+                            <th style="min-width:100px;">Medical center</th>
+                            <th style="min-width:150px;">From country</th>
+                            <th style="min-width:150px;">From city </th>
+                            <th style="min-width:150px;">To country </th>
+                            <th style="min-width:150px;">To city </th>
+                            <th style="min-width:150px;">Special Needs</th>
+                            <th style="min-width:150px;">Arrival date</th>
+                            <th style="min-width:150px;">Arrival time</th>
+                            <th style="min-width:150px;">Departure date</th>
+                            <th style="min-width:150px;">Departure time</th>
+                            <th style="min-width:150px;">Actions</th>
+                        </tr>
+                    <tbody>
+                                                {{--===================== German Doctor  ============================== --}}
+                        @if ($type == 2)
+                           @foreach ($trips  as $trip)
+                               <tr>
+                                   <td>{{$trip->id}}</td>
+                                   <td>{{$trip->case_id}}</td>
+                                   <td> {{DB::table('users')->where('id', $trip->patient_id)->value('name')}} </td>
+                                   <td> {{DB::table('medical_centers')->where('id', $trip->medical_center_id)->value('name')}} </td>
+                                   <td> {{DB::table('locations_countries')->where('id', $trip->from_country_id)->value('name')}}</td>
+                                   <td> {{DB::table('locations_cities')->where('id', $trip->from_city_id)->value('name')}}</td>
+                                   <td> {{DB::table('locations_countries')->where('id', $trip->to_country_id)->value('name')}}</td>
+                                   <td> {{DB::table('locations_cities')->where('id', $trip->to_city_id)->value('name')}}</td>
+                                   <td>{{$trip->special_needs}}</td>
+                                   <td>{{$trip->arrival_date==null?'Not set yet':$trip->arrival_date}}</td>
+                                   <td>{{$trip->arrival_time==null?'Not set yet':$trip->arrival_time}}</td>
+                                   <td>{{$trip->departure_date==null?'Not set yet':$trip->departure_date}}</td>
+                                   <td>{{$trip->departure_time==null?'Not set yet':$trip->departure_time}}</td>
+                                   <td>
+
+                                       @if ($trip->is_ready == 1)
+                                       Airline Trip is Ready
+                                       @elseif ($trip->is_ready == 2)
+                                       Traveled
+                                       @else
+                                       Waiting for setting Airline trip time
+                                       @endif
+                                   </td>
+                               </tr>
+                         @endforeach
+                     @endif
+
+                                   {{--===================== Secretary/ City Admin  ============================== --}}
+
+                     @if ($type == 4 || $type==5)
+                     @foreach ($trips  as $trip)
+                         <tr>
+                             <td>{{$trip->id}}</td>
+                             <td>{{$trip->case_id}}</td>
+                             <td> {{DB::table('users')->where('id', $trip->patient_id)->value('name')}} </td>
+                             <td> {{DB::table('users')->where('id', $trip->patient_id)->value('mobile')}} </td>
+                             <td> {{DB::table('users')->where('id', $trip->doctor_id)->value('name')}} </td>
+                             <td> {{DB::table('medical_centers')->where('id', $trip->medical_center_id)->value('name')}} </td>
+                             <td> {{DB::table('locations_countries')->where('id', $trip->from_country_id)->value('name')}}</td>
+                             <td> {{DB::table('locations_cities')->where('id', $trip->from_city_id)->value('name')}}</td>
+                             <td> {{DB::table('locations_countries')->where('id', $trip->to_country_id)->value('name')}}</td>
+                             <td> {{DB::table('locations_cities')->where('id', $trip->to_city_id)->value('name')}}</td>
+                             <td>{{$trip->special_needs}}</td>
+                             <td>{{$trip->arrival_date==null?'Not set yet':$trip->arrival_date}}</td>
+                             <td>{{$trip->arrival_time==null?'Not set yet':$trip->arrival_time}}</td>
+                             <td>{{$trip->departure_date==null?'Not set yet':$trip->departure_date}}</td>
+                             <td>{{$trip->departure_time==null?'Not set yet':$trip->departure_time}}</td>
+                             <td>
+
+                                 @if ($trip->is_ready == 1)
+                                 Airline Trip is Ready
+                                 @elseif ($trip->is_ready == 2)
+                                 Traveled
+                                 @else
+                                 Waiting for setting Airline trip time
+                                 @endif
+                             </td>
+                         </tr>
+                   @endforeach
+               @endif
+
+                                          {{--===================== Airline Office  ============================== --}}
+
+                @if ($type == 6)
+                @foreach ($trips  as $trip)
+                  <form action="{{ route('travel.request.accept') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <tr>
+                        <td>{{$trip->id}}</td>
+                        <td>{{$trip->case_id}}</td>
+                        <td> {{DB::table('users')->where('id', $trip->patient_id)->value('name')}} </td>
+                        <td> {{DB::table('users')->where('id', $trip->patient_id)->value('mobile')}} </td>
+                        <td> {{DB::table('users')->where('id', $trip->doctor_id)->value('name')}} </td>
+                        <td> {{DB::table('medical_centers')->where('id', $trip->medical_center_id)->value('name')}} </td>
+                        <td> {{DB::table('locations_countries')->where('id', $trip->from_country_id)->value('name')}}</td>
+                        <td> {{DB::table('locations_cities')->where('id', $trip->from_city_id)->value('name')}}</td>
+                        <td> {{DB::table('locations_countries')->where('id', $trip->to_country_id)->value('name')}}</td>
+                        <td> {{DB::table('locations_cities')->where('id', $trip->to_city_id)->value('name')}}</td>
+                        <td>{{$trip->special_needs}}</td>
+                        <td>@if($trip->arrival_date==null)<input type="date" name="arrival_date" >@else{{ $trip->arrival_date }}@endif</td>
+                        <td>@if($trip->arrival_time==null)<input type="time" name="arrival_time" >@else{{ $trip->arrival_time }}@endif</td>
+                        <td>@if($trip->departure_date==null)<input type="date" name="departure_date" >@else{{ $trip->departure_date }}@endif</td>
+                        <td>@if($trip->departure_time==null)<input type="time" name="departure_time" >@else{{ $trip->departure_time }}@endif</td>
+
+                        <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+                        <input type="hidden" name="request_id" value="{{ $trip->request_id }}">
+
+                        <td>
+                            @if ($trip->is_ready == 0 )
+                            {{-- Accept --}}
+                              <button class="btn btn-warning btn-sm btn-just-icon" type="submit"><i style="color:green" class="material-icons">A</i></button>
+                            @elseif ($trip->is_ready == 1)
+                            Accepted
+                            <a href="{{ route('travel.traveled',['id'=>$trip->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                              <i style="color:green" class="material-icons">T</i></a>
+                            @elseif ($trip->is_ready == 2)
+                            Traveled
+                            @endif
+                        </td>
+                    </tr>
+              @endforeach
+          </form>
+          @endif
+
+                              {{--===================== Patient  ============================== --}}
+
+                              @if ($type == 3)
+                              @foreach ($trips  as $trip)
+                                  <tr>
+                                      <td>{{$trip->id}}</td>
+                                      <td>{{$trip->case_id}}</td>
+                                      <td> {{DB::table('users')->where('id', $trip->patient_id)->value('name')}} </td>
+                                      <td> {{DB::table('users')->where('id', $trip->patient_id)->value('mobile')}} </td>
+                                      <td> {{DB::table('users')->where('id', $trip->doctor_id)->value('name')}} </td>
+                                      <td> {{DB::table('medical_centers')->where('id', $trip->medical_center_id)->value('name')}} </td>
+                                      <td> {{DB::table('locations_countries')->where('id', $trip->from_country_id)->value('name')}}</td>
+                                      <td> {{DB::table('locations_cities')->where('id', $trip->from_city_id)->value('name')}}</td>
+                                      <td> {{DB::table('locations_countries')->where('id', $trip->to_country_id)->value('name')}}</td>
+                                      <td> {{DB::table('locations_cities')->where('id', $trip->to_city_id)->value('name')}}</td>
+                                      <td>{{$trip->special_needs}}</td>
+                                      <td>{{$trip->arrival_date==null?'Not set yet':$trip->arrival_date}}</td>
+                                      <td>{{$trip->arrival_time==null?'Not set yet':$trip->arrival_time}}</td>
+                                      <td>{{$trip->departure_date==null?'Not set yet':$trip->departure_date}}</td>
+                                      <td>{{$trip->departure_time==null?'Not set yet':$trip->departure_time}}</td>
+                                      <td>
+
+                                          @if ($trip->is_ready == 1)
+                                          Airline Trip is Ready
+                                          @elseif ($trip->is_ready == 2)
+                                          Traveled
+                                          @else
+                                          <a href="{{ route('travel.filesNeeded',['id'=>$trip->id,'type'=>'parent']) }}" class="btn btn-warning btn-sm btn-just-icon">
+                                            <i style="color:red" class="material-icons">Files</i></a>
+
+                                            <a href="{{ route('travel.filesNeeded',['id'=>$trip->id,'type'=>'child']) }}" class="btn btn-warning btn-sm btn-just-icon">
+                                                <i style="color:red" class="material-icons">Add passenger</i></a>
+                                          @endif
+                                      </td>
+                                  </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- =============================================================================================================== --}}
+{{-- ================================================================================================================ --}}
+ {{-- ==================================== Trip Files TABLE ========================================================== --}}
+ @if ($type == 3 || $type == 6)
+ <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!-- Card Header -->
+            <div class="card-header card-header-success">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="card-title ">Airline Trip Files</h4>
+                        <p class="card-category"> Here is a subtitle for this table</p>
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- Success --}}
+            <div class="card-body">
+               @if (session()->has('message4'))
+               <div class="" style="color: green">
+                   {{ session()->get('message4') }}
+               </div>
+               @endif
+
+               {{-- Errors --}}
+               <div class="card-body">
+                @if (session()->has('error2'))
+                <div class="" style="color: red">
+                    {{ session()->get('error2') }}
+                </div>
+                @endif
+                <table class="table dataTable">
+                        <tr>
+                            <th style="min-width:100px;">id</th>
+                            <th style="min-width:100px;">trip id</th>
+                            <th style="min-width:100px;">name</th>
+                            <th style="min-width:100px;">Phone</th>
+                            <th style="min-width:100px;">passengers</th>
+                            <th style="min-width:100px;">parent ID</th>
+           @if ($type == 3) <th style="min-width:100px;">Note</th> @endif
+                            <th style="min-width:150px;">Actions</th>
+                        </tr>
+                    <tbody>
 
-                         </tbody>
-                     </table>
-                 </div>
-             </div>
-         </div>
+           {{--===================== Patient  ============================== --}}
+           @if ($type == 3)
+           @foreach ($files  as $file)
+               <tr>
+                   <td>{{$file->id}}</td>
+                   <td>{{$file->trip_id}}</td>
+                   <td>{{$file->name}}</td>
+                   <td>{{$file->phone}}</td>
+                   <td>{{$file->passengers}}</td>
+                   <td>{{$file->parent_id==null?'Parent':$file->parent_id}}</td>
+                   <td>{{$file->note}}</td>
+                   <td>
+                       @if ($file->is_accepted == 1)
+                       Accepted
+                       @elseif ($file->is_accepted <= 0 ) {{-- 0 = not accepted yet / -1 = declined --}}
+                       {{ $file->is_accepted == -1?'denied':'Not accepted yet' }} <br>
 
+                       <a href="{{ route('travel.file.info',['id'=>$file->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                        <i style="color:blue" class="material-icons">Edit file</i></a>
 
-     </div>
+                        <a href="{{ route('travel.file.delete',['id'=>$file->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                            <i style="color:blue" class="material-icons">Delete file</i></a>
+                       @endif
+                   </td>
+               </tr>
+         @endforeach
+     @endif
 
 
+           {{--===================== Airline office  ============================== --}}
+           @if ($type == 6)
+           @foreach ($files  as $file)
+               <tr>
+                   <td>{{$file->id}}</td>
+                   <td>{{$file->trip_id}}</td>
+                   <td>{{$file->name}}</td>
+                   <td>{{$file->phone}}</td>
+                   <td>{{$file->passengers}}</td>
+                   <td>{{$file->parent_id==null?'Parent':$file->parent_id}}</td>
+                   <td>
+                       @if ($file->is_accepted == 1)
+                       Accepted
+                       @elseif ($file->is_accepted == 0 || $file->is_accepted == -1 ) {{-- 0 = not accepted yet / -1 = declined --}}
+                       {{ $file->is_accepted == -1?'denied':'Not accepted yet' }} <br>
 
+                       <a href="{{ route('travel.file.info',['id'=>$file->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                        <i style="color:red" class="material-icons">Show files</i></a>
 
+                        <a href="{{ route('travel.file.accept',['id'=>$file->id]) }}" class="btn btn-warning btn-sm btn-just-icon">
+                            <i style="color:green" class="material-icons">Accept file</i></a>
+                       @endif
+                   </td>
+               </tr>
+         @endforeach
+     @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ @endif
 
 
 
@@ -511,11 +697,23 @@
 
 
 
-         </div>
-         <!-- END: Anamnese Tab -->
-     </div>
- </div>
- <!-- END: request Content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- -----------------------------------------------------------------------------------------------------------
 
                     <!-- END: Page Here -->

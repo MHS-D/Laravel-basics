@@ -16,6 +16,7 @@ class CreateAirlineTripsTable extends Migration
         Schema::create('airline_trips', function (Blueprint $table) {
             $table->id();
             $table->integer('case_id');
+            $table->integer('request_id');
             $table->integer('doctor_id');
             $table->integer('patient_id');
             $table->integer('medical_center_id');
