@@ -5,6 +5,7 @@ use App\Http\Controllers\api;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\database;
+use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\forgotpassword;
 use App\Http\Controllers\hitos_payment;
 use App\Http\Controllers\Realtime;
@@ -294,6 +295,9 @@ Route::get('delete-student/{id}',[uploadfile::class,'deleteImage']);
 
 
     });
+
+    //======================================Firebase notification========================
+    Route::get('fcm',[FirebaseController::class,'index'])->name('firebase.index');
 
 
  });
