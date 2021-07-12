@@ -187,7 +187,7 @@
                                         <td> {{DB::table('users')->where('id', $request->patient_id)->value('name')}} </td>
                                         <td> {{DB::table('medical_centers')->where('id', $request->medical_center_id)->value('name')}} </td>
                                         <td>{{$request->reason}}</td>
-                                        <td>{{$request->is_urgent==1?'yes':'no'}}</td>
+                                        <td>{!! $request->is_urgent==1?'yes':'no'!!}</td>
                                         <td>{{$request->oxygen==1?'yes':'no'}}</td>
                                         <td>{{$request->chair==1?'yes':'no'}}</td>
                                         <td>
